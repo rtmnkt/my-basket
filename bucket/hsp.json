@@ -1,0 +1,13 @@
+{
+    "version": "3.7",
+    "description": "Hot Soup Processor (HSP) 3.7 full development environment and scripting tools",
+    "homepage": "https://hsp.tv/",
+    "license": "Freeware",
+    "url": "https://www.onionsoft.net/hsp/file/hsp37.zip",
+    "extract_dir": "hsp3",
+    "shortcuts": [
+        ["hsed3.exe", "HSP Script Editor"],
+        ["hsptv.exe", "HSPTV Browser"]
+    ],
+    "notes": "Portable HSP 3.7 full package. SHA256 is not yet recorded: obtain the official ZIP and add its Get-FileHash SHA256 value to this manifest for integrity verification."
+}
