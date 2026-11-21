@@ -12,9 +12,19 @@
     "installer": {
         "script": [
             "$setup = Get-ChildItem -Path $dir -Filter 'TMOG-Task-Manager-Setup*.exe' -File -Recurse | Select-Object -First 1",
-            "if (-not $setup) { throw 'TMOG Inno Setup installer not found inside the ZIP.' }",
-            "Expand-InnoArchive -Path $setup.FullName -DestinationPath $dir -Removal",
-            "if (-not (Test-Path (Join-Path $dir 'TMOG.exe'))) { throw 'TMOG.exe not found after extracting the installer.' }"
+            "if (-not $setup) { throw 'TMOG installer EXE not found inside the downloaded ZIP.' }",
+            "$unpack = Join-Path $dir '_scoop_unpack'",
+            "New-Item -Path $unpack -ItemType Directory -Force | Out-Null",
+            "Expand-InnoArchive -Path $setup.FullName -DestinationPath $unpack",
+            "$appExe = Get-ChildItem -Path $unpack -Filter 'TMOG.exe' -File -Recurse | Select-Object -First 1",
+            "if (-not $appExe) {",
+            "    $found = @(Get-ChildItem -Path $unpack -Filter '*.exe' -File -Recurse | Select-Object -ExpandProperty FullName)",
+            "    throw ('TMOG.exe not found after extracting Inno Setup. Executables: ' + ($found -join '; '))",
+            "}",
+            "Copy-Item -Path (Join-Path $appExe.DirectoryName '*') -Destination $dir -Recurse -Force",
+            "if (-not (Test-Path (Join-Path $dir 'TMOG.exe'))) { throw 'TMOG.exe could not be copied into the Scoop app directory.' }",
+            "Remove-Item -Path $unpack -Recurse -Force",
+            "Remove-Item -Path $setup.FullName -Force"
         ]
     },
     "shortcuts": [
