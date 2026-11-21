@@ -1,0 +1,26 @@
+{
+    "version": "1.1.1",
+    "description": "Native Windows task manager and system performance monitor by Dave Plummer",
+    "homepage": "https://tmog.org/",
+    "license": "Proprietary",
+    "architecture": {
+        "64bit": {
+            "url": "https://tmog.org/downloads/TMOG-Task-Manager-Setup-1.1.1-0-x64-07a2175da549.zip?v=1.1.1-07a2175da549db7f39e18fd14eb059b9dbca83225b740c1660f83fdf444d4b75",
+            "hash": "07a2175da549db7f39e18fd14eb059b9dbca83225b740c1660f83fdf444d4b75"
+        }
+    },
+    "installer": {
+        "script": [
+            "$setup = Get-ChildItem -Path $dir -Filter 'TMOG-Task-Manager-Setup*.exe' -File -Recurse | Select-Object -First 1",
+            "if (-not $setup) { throw 'TMOG Inno Setup installer not found inside the ZIP.' }",
+            "Expand-InnoArchive -Path $setup.FullName -DestinationPath $dir -Removal",
+            "if (-not (Test-Path (Join-Path $dir 'TMOG.exe'))) { throw 'TMOG.exe not found after extracting the installer.' }"
+        ]
+    },
+    "shortcuts": [
+        [
+            "TMOG.exe",
+            "Task Manager TMOG"
+        ]
+    ]
+}
