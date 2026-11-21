@@ -4,7 +4,7 @@
     "homepage": "https://hsp.tv/",
     "license": "Freeware",
     "url": "https://www.onionsoft.net/hsp/file/hsp37.zip",
-    "extract_dir": "hsp3",
+    "extract_dir": "hsp37",
     "shortcuts": [
         ["hsed3.exe", "HSP Script Editor"],
         ["hsptv.exe", "HSPTV Browser"]
