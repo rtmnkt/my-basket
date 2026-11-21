@@ -1,6 +1,6 @@
 {
     "version": "1.1.1",
-    "description": "Native Windows task manager and system performance monitor by Dave Plummer",
+    "description": "Native Windows task manager and system performance monitor",
     "homepage": "https://tmog.org/",
     "license": "Proprietary",
     "architecture": {
@@ -16,21 +16,27 @@
             "$unpack = Join-Path $dir '_scoop_unpack'",
             "New-Item -Path $unpack -ItemType Directory -Force | Out-Null",
             "Expand-InnoArchive -Path $setup.FullName -DestinationPath $unpack",
-            "$appExe = Get-ChildItem -Path $unpack -Filter 'TMOG.exe' -File -Recurse | Select-Object -First 1",
+            "$appExe = Get-ChildItem -Path $unpack -Filter 'Task Manager.exe' -File -Recurse | Select-Object -First 1",
             "if (-not $appExe) {",
             "    $found = @(Get-ChildItem -Path $unpack -Filter '*.exe' -File -Recurse | Select-Object -ExpandProperty FullName)",
-            "    throw ('TMOG.exe not found after extracting Inno Setup. Executables: ' + ($found -join '; '))",
+            "    throw ('Task Manager.exe not found after extracting Inno Setup. Executables: ' + ($found -join '; '))",
             "}",
-            "Copy-Item -Path (Join-Path $appExe.DirectoryName '*') -Destination $dir -Recurse -Force",
-            "if (-not (Test-Path (Join-Path $dir 'TMOG.exe'))) { throw 'TMOG.exe could not be copied into the Scoop app directory.' }",
-            "Remove-Item -Path $unpack -Recurse -Force",
-            "Remove-Item -Path $setup.FullName -Force"
+            "Get-ChildItem -LiteralPath $appExe.DirectoryName -Force | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $dir -Recurse -Force }",
+            "if (-not (Test-Path -LiteralPath (Join-Path $dir 'Task Manager.exe') -PathType Leaf)) { throw 'Task Manager.exe could not be copied into the Scoop app directory.' }",
+            "Remove-Item -LiteralPath $unpack -Recurse -Force",
+            "Remove-Item -LiteralPath $setup.FullName -Force"
         ]
     },
     "shortcuts": [
         [
-            "TMOG.exe",
+            "Task Manager.exe",
             "Task Manager TMOG"
+        ]
+    ],
+    "bin": [
+        [
+            "Task Manager.exe",
+            "tmog"
         ]
     ]
 }
